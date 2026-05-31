@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boris MultiService – Betonherstel & Epoxyvloeren Leeuwarden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg:    #2f2e2e;
+  --bg2:   #272626;
+  --bg3:   #3a3939;
+  --gold:  #e8b84b;
+  --gold2: #c8963c;
+  --white: #ffffff;
+  --off:   #f0ede8;
+  --dust:  #a09890;
+  --dark:  #1e1d1d;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--off); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+@media (pointer: fine) { body { cursor: none; } }
+.cursor, .cursor-ring { display:none; position:fixed; pointer-events:none; transform:translate(-50%,-50%); }
+@media (pointer: fine) {
+  .cursor { display:block; width:10px; height:10px; background:var(--gold); border-radius:50%; z-index:9999; }
+  .cursor-ring { display:block; width:38px; height:38px; border:1.5px solid var(--gold); border-radius:50%; z-index:9998; opacity:.55; transition:width .2s,height .2s; }
+}
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:18px 56px; display:flex; justify-content:space-between; align-items:center; transition:all .4s; }
+nav.scrolled { background:rgba(30,29,29,.96); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); padding:10px 56px; border-bottom:1px solid rgba(232,184,75,.18); }
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0; }
+.nav-logo img { height:56px; width:auto; object-fit:contain; transition:transform .3s; }
+.nav-logo:hover img { transform:scale(1.08) rotate(-4deg); }
+.nav-logo-text { display:none; }
+.nav-logo-text span { color:var(--gold); }
+.nav-links { display:flex; gap:34px; list-style:none; align-items:center; }
+.nav-links a { color:var(--dust); text-decoration:none; font-size:11px; letter-spacing:2px; text-transform:uppercase; transition:color .3s; position:relative; }
+.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--gold); transition:width .3s; }
+.nav-links a:hover { color:var(--white); }
+.nav-links a:hover::after { width:100%; }
+.nav-cta { background:var(--gold)!important; color:var(--dark)!important; padding:9px 22px!important; font-weight:500!important; }
+.nav-cta:hover { background:var(--gold2)!important; }
+.nav-cta::after { display:none!important; }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:6px; z-index:201; }
+.hamburger span { display:block; width:24px; height:2px; background:var(--white); transition:all .3s; transform-origin:center; }
+.hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+.hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+/* MOBILE MENU */
+.mob-menu { position:fixed; inset:0; background:var(--dark); z-index:190; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:6px; transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1); }
+.mob-menu.open { transform:translateX(0); }
+.mob-menu a { font-family:'Bebas Neue',sans-serif; font-size:40px; letter-spacing:3px; color:var(--white); text-decoration:none; opacity:0; transform:translateX(28px); transition:color .3s,opacity .4s,transform .4s; }
+.mob-menu.open a { opacity:1; transform:translateX(0); }
+.mob-menu.open a:nth-child(2) { transition-delay:.08s; }
+.mob-menu.open a:nth-child(3) { transition-delay:.14s; }
+.mob-menu.open a:nth-child(4) { transition-delay:.20s; }
+.mob-menu.open a:nth-child(5) { transition-delay:.26s; }
+.mob-menu a:hover { color:var(--gold); }
+.mob-cta { background:var(--gold); color:var(--dark)!important; padding:14px 44px; margin-top:18px; font-size:20px!important; }
+.mob-top { position:absolute; top:24px; left:20px; display:flex; align-items:center; gap:10px; }
+.mob-top img { height:50px; width:auto; object-fit:contain; }
+.mob-top span { display:none; }
+.mob-top span em { color:var(--gold); font-style:normal; }
+.mob-bottom { position:absolute; bottom:32px; font-size:10px; color:var(--dust); letter-spacing:2px; text-transform:uppercase; }
+
+/* HERO */
+.hero { min-height:100svh; display:grid; grid-template-columns:1fr 1fr; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; inset:0; z-index:0; background:radial-gradient(ellipse at 70% 50%, rgba(232,184,75,.05) 0%, transparent 65%); pointer-events:none; }
+#particles { position:absolute; inset:0; z-index:0; pointer-events:none; }
+.hero-left { padding:148px 56px 80px; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:2; }
+.hero-eyebrow { display:inline-flex; align-items:center; gap:10px; font-size:10px; letter-spacing:3.5px; text-transform:uppercase; color:var(--gold); margin-bottom:32px; opacity:0; transform:translateY(18px); animation:fadeUp .8s .2s forwards; }
+.hero-eyebrow::before { content:''; width:26px; height:1px; background:var(--gold); display:block; }
+.hero-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(62px,8vw,118px); line-height:.91; letter-spacing:2px; color:var(--white); margin-bottom:26px; }
+.hero-title .line { display:block; overflow:hidden; }
+.hero-title .line span { display:block; transform:translateY(105%); animation:slideUp .9s cubic-bezier(.16,1,.3,1) forwards; }
+.hero-title .line:nth-child(1) span { animation-delay:.28s; }
+.hero-title .line:nth-child(2) span { animation-delay:.42s; }
+.hero-title .line:nth-child(3) span { animation-delay:.56s; color:var(--gold); }
+.hero-sub { font-size:14px; line-height:1.78; color:var(--dust); max-width:370px; margin-bottom:44px; font-weight:300; opacity:0; animation:fadeUp .8s .88s forwards; }
+.hero-actions { display:flex; gap:14px; align-items:center; flex-wrap:wrap; opacity:0; animation:fadeUp .8s 1.08s forwards; }
+.btn-gold { background:var(--gold); color:var(--dark); padding:14px 30px; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; font-weight:500; text-decoration:none; display:inline-flex; align-items:center; gap:9px; transition:all .3s; position:relative; overflow:hidden; white-space:nowrap; }
+.btn-gold::before { content:''; position:absolute; inset:0; background:var(--gold2); transform:translateX(-101%); transition:transform .4s cubic-bezier(.16,1,.3,1); }
+.btn-gold:hover::before { transform:translateX(0); }
+.btn-gold:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(232,184,75,.22); }
+.btn-gold span, .btn-gold svg { position:relative; z-index:1; }
+.btn-line { color:var(--off); font-size:11px; letter-spacing:2.5px; text-transform:uppercase; text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding:14px 0; border-bottom:1px solid rgba(232,184,75,.28); transition:all .3s; white-space:nowrap; }
+.btn-line:hover { color:var(--gold); border-color:var(--gold); gap:14px; }
+.hero-right { position:relative; z-index:2; display:flex; align-items:center; justify-content:center; padding:120px 56px 80px 16px; }
+.hero-card { width:100%; max-width:460px; background:var(--bg2); border:1px solid rgba(232,184,75,.14); padding:40px; position:relative; overflow:hidden; opacity:0; animation:fadeIn 1.2s .55s forwards; }
+.hero-card::before { content:''; position:absolute; top:0; right:0; width:160px; height:160px; background:radial-gradient(circle,rgba(232,184,75,.07),transparent 70%); pointer-events:none; }
+.card-logo-row { display:flex; align-items:center; gap:14px; margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,.06); }
+.card-logo-row img { height:72px; width:auto; object-fit:contain; }
+.card-logo-name { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--white); }
+.card-logo-tag { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-top:3px; }
+.hero-stats { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:32px; }
+.stat-num { font-family:'Bebas Neue',sans-serif; font-size:50px; color:var(--gold); line-height:1; display:block; }
+.stat-lbl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--dust); margin-top:3px; }
+.hero-badge { display:flex; align-items:center; gap:12px; padding:13px 16px; background:rgba(232,184,75,.07); border-left:3px solid var(--gold); }
+.badge-txt { font-size:12px; color:var(--dust); line-height:1.5; }
+.badge-txt strong { display:block; color:var(--white); font-size:13px; }
+.scroll-hint { position:absolute; bottom:28px; left:56px; display:flex; align-items:center; gap:10px; color:var(--dust); font-size:10px; letter-spacing:2px; text-transform:uppercase; z-index:2; opacity:0; animation:fadeIn 1s 1.5s forwards; }
+.scroll-line { width:34px; height:1px; background:var(--dust); position:relative; overflow:hidden; }
+.scroll-line::after { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:var(--gold); animation:scanLine 2.2s ease-in-out infinite; }
+
+/* MARQUEE */
+.marquee-band { background:var(--gold); padding:16px 0; overflow:hidden; }
+.marquee-inner { display:flex; animation:marquee 20s linear infinite; white-space:nowrap; }
+.marquee-item { display:inline-flex; align-items:center; gap:18px; padding:0 32px; font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:3px; color:var(--dark); }
+.mq-dot { width:5px; height:5px; background:rgba(30,29,29,.3); border-radius:50%; flex-shrink:0; }
+
+/* SECTIONS */
+.sec-label { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+.sec-label::before { content:''; width:20px; height:1px; background:var(--gold); display:block; }
+.sec-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(42px,5.5vw,80px); line-height:.94; color:var(--white); margin-bottom:56px; }
+.sec-title em { color:var(--gold); font-style:normal; }
+
+/* SERVICES */
+.services { padding:96px 56px; background:var(--bg); }
+.services-grid { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
+.svc-card { background:var(--bg2); padding:44px 38px 60px; position:relative; overflow:hidden; cursor:pointer; transition:background .35s; }
+.svc-card::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(232,184,75,.05),transparent); opacity:0; transition:opacity .35s; }
+.svc-card:hover { background:#333232; }
+.svc-card:hover::after { opacity:1; }
+.svc-num { font-family:'Bebas Neue',sans-serif; font-size:68px; color:rgba(232,184,75,.09); line-height:1; position:absolute; top:16px; right:24px; pointer-events:none; transition:color .35s; }
+.svc-card:hover .svc-num { color:rgba(232,184,75,.17); }
+.svc-icon { width:50px; height:50px; background:rgba(232,184,75,.09); border:1px solid rgba(232,184,75,.2); display:grid; place-items:center; font-size:20px; margin-bottom:22px; transition:all .3s; position:relative; z-index:1; }
+.svc-card:hover .svc-icon { background:rgba(232,184,75,.2); border-color:var(--gold); transform:rotate(5deg); }
+.svc-name { font-family:'Bebas Neue',sans-serif; font-size:30px; letter-spacing:1px; color:var(--white); margin-bottom:12px; transition:color .3s; position:relative; z-index:1; }
+.svc-card:hover .svc-name { color:var(--gold); }
+.svc-desc { font-size:13px; line-height:1.75; color:var(--dust); font-weight:300; max-width:300px; position:relative; z-index:1; }
+.svc-arrow { position:absolute; bottom:28px; right:28px; width:36px; height:36px; border:1px solid rgba(232,184,75,.2); display:grid; place-items:center; color:var(--dust); font-size:15px; transition:all .3s; z-index:1; }
+.svc-card:hover .svc-arrow { background:var(--gold); border-color:var(--gold); color:var(--dark); transform:rotate(45deg); }
+
+/* WHY */
+.why { padding:96px 56px; background:var(--bg2); position:relative; overflow:hidden; }
+.why::before { content:''; position:absolute; top:-120px; right:-120px; width:420px; height:420px; background:radial-gradient(circle,rgba(232,184,75,.04),transparent 70%); pointer-events:none; }
+.why-inner { display:grid; grid-template-columns:1fr 1.1fr; gap:72px; align-items:center; }
+.why-list { margin-top:36px; display:flex; flex-direction:column; gap:3px; }
+.why-item { display:flex; align-items:flex-start; gap:16px; padding:18px; background:rgba(255,255,255,.02); border-left:2px solid transparent; transition:all .3s; }
+.why-item:hover { background:rgba(232,184,75,.05); border-color:var(--gold); transform:translateX(4px); }
+.why-chk { width:24px; height:24px; background:rgba(232,184,75,.11); border:1px solid rgba(232,184,75,.25); display:grid; place-items:center; font-size:11px; color:var(--gold); flex-shrink:0; margin-top:2px; }
+.wi-title { font-size:14px; font-weight:500; color:var(--white); margin-bottom:4px; }
+.wi-desc { font-size:12px; color:var(--dust); line-height:1.65; font-weight:300; }
+.why-grid { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
+.wg-num { background:var(--bg3); padding:32px 24px; text-align:center; position:relative; overflow:hidden; transition:background .3s; }
+.wg-num:hover { background:#3e3d3d; }
+.wg-num::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:0; height:2px; background:var(--gold); transition:width .4s; }
+.wg-num:hover::after { width:56%; }
+.wg-big { font-family:'Bebas Neue',sans-serif; font-size:58px; color:var(--gold); line-height:1; display:block; }
+.wg-lbl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--dust); margin-top:6px; display:block; }
+.why-quote { grid-column:1/-1; background:rgba(232,184,75,.05); border:1px solid rgba(232,184,75,.12); padding:28px 32px; position:relative; margin-top:3px; }
+.why-quote::before { content:'"'; position:absolute; top:-14px; left:24px; font-family:'Playfair Display',serif; font-size:88px; color:var(--gold); opacity:.18; line-height:1; }
+.why-quote p { font-family:'Playfair Display',serif; font-size:15px; line-height:1.65; color:var(--off); font-style:italic; }
+.why-quote cite { display:block; margin-top:12px; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); font-style:normal; }
+
+/* PROCESS */
+.process { padding:96px 56px; background:var(--bg); }
+.proc-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:3px; margin-top:56px; }
+.step { background:var(--bg2); padding:40px 28px; position:relative; overflow:hidden; transition:background .3s; }
+.step:hover { background:#333232; }
+.step::after { content:''; position:absolute; top:50%; right:-1px; transform:translateY(-50%); width:2px; height:32px; background:var(--gold); opacity:.22; }
+.step:last-child::after { display:none; }
+.step-num { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:3px; color:var(--gold); margin-bottom:22px; display:flex; align-items:center; gap:7px; }
+.step-num::after { content:''; flex:1; height:1px; background:rgba(232,184,75,.18); }
+.step-title { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--white); margin-bottom:12px; letter-spacing:1px; }
+.step-desc { font-size:12px; color:var(--dust); line-height:1.72; font-weight:300; }
+
+/* CTA */
+.cta-band { background:var(--gold); padding:68px 56px; display:grid; grid-template-columns:1fr auto; align-items:center; gap:44px; position:relative; overflow:hidden; }
+.cta-band::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(0,0,0,.025) 20px,rgba(0,0,0,.025) 40px); }
+.cta-lbl { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(30,29,29,.5); margin-bottom:8px; position:relative; }
+.cta-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(34px,4.5vw,64px); color:var(--dark); line-height:.94; letter-spacing:1px; position:relative; }
+.btn-dark { background:var(--dark); color:var(--gold); padding:14px 30px; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; font-weight:500; text-decoration:none; display:inline-flex; align-items:center; gap:9px; transition:all .3s; white-space:nowrap; position:relative; }
+.btn-dark:hover { background:var(--bg2); transform:translateY(-2px); }
+
+/* CONTACT */
+.contact { padding:96px 56px; background:var(--bg2); display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start; }
+.contact-details { margin-top:36px; display:flex; flex-direction:column; }
+.contact-row { display:flex; align-items:flex-start; gap:13px; padding:18px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+.ci { width:36px; height:36px; background:rgba(232,184,75,.08); border:1px solid rgba(232,184,75,.18); display:grid; place-items:center; font-size:14px; flex-shrink:0; }
+.cr-lbl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
+.cr-val { font-size:13px; color:var(--white); font-weight:300; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.ff { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+.ff label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--dust); }
+.ff input, .ff textarea, .ff select { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); color:var(--white); padding:12px 14px; font-size:13px; font-family:'DM Sans',sans-serif; outline:none; transition:border-color .3s,background .3s; -webkit-appearance:none; appearance:none; border-radius:0; }
+.ff input:focus, .ff textarea:focus, .ff select:focus { border-color:var(--gold); background:rgba(232,184,75,.04); }
+.ff textarea { resize:vertical; min-height:100px; }
+.ff select { cursor:pointer; }
+.ff select option { background:var(--bg2); }
+.form-btn { background:var(--gold); color:var(--dark); padding:14px 40px; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; font-weight:500; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:9px; transition:all .3s; font-family:'DM Sans',sans-serif; border-radius:0; -webkit-appearance:none; }
+.form-btn:hover { background:var(--gold2); transform:translateY(-2px); }
+
+/* FOOTER */
+footer { background:var(--dark); border-top:1px solid rgba(255,255,255,.05); padding:52px 56px; display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:56px; }
+.footer-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.footer-logo img { height:52px; width:auto; object-fit:contain; }
+.footer-logo-txt { display:none; }
+.footer-logo-txt span { color:var(--gold); }
+.footer-brand p { margin-top:14px; font-size:12px; color:var(--dust); line-height:1.72; font-weight:300; max-width:240px; }
+.fc-title { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+.fc-links { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.fc-links a { color:var(--dust); text-decoration:none; font-size:13px; transition:color .3s; display:flex; align-items:center; gap:7px; }
+.fc-links a::before { content:'→'; color:var(--gold); opacity:0; transform:translateX(-6px); transition:all .3s; font-size:11px; }
+.fc-links a:hover { color:var(--white); }
+.fc-links a:hover::before { opacity:1; transform:translateX(0); }
+.footer-bottom { background:var(--dark); border-top:1px solid rgba(255,255,255,.04); padding:18px 56px; display:flex; justify-content:space-between; align-items:center; }
+.footer-bottom p { font-size:11px; color:rgba(160,152,144,.4); }
+.footer-bottom span { color:var(--gold); }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes slideUp { from{transform:translateY(105%)} to{transform:translateY(0)} }
+@keyframes scanLine { 0%{left:-100%} 100%{left:100%} }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.reveal { opacity:0; transform:translateY(32px); transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+
+/* ===== OVER ONS ===== */
+.overons { padding: 100px 56px; background: var(--dark); }
+.overons-inner { display: grid; grid-template-columns: 1fr; gap: 0; align-items: start; max-width: 860px; }
+
+.oo-intro {
+  font-size: 16px; line-height: 1.8; color: var(--off);
+  margin-bottom: 20px; font-weight: 300;
+  border-left: 3px solid var(--gold);
+  padding-left: 20px;
+}
+.oo-body { font-size: 14px; line-height: 1.85; color: var(--dust); margin-bottom: 20px; font-weight: 300; }
+
+.oo-kernpunten { margin-top: 36px; }
+.oo-kp-title {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.oo-kp-title::after { content: ''; flex: 1; height: 1px; background: rgba(232,184,75,.18); }
+.oo-kp-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.oo-kp-list li {
+  display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px;
+  background: rgba(255,255,255,.02); border-left: 2px solid transparent; transition: all .3s;
+}
+.oo-kp-list li:hover { background: rgba(232,184,75,.05); border-color: var(--gold); transform: translateX(4px); }
+.oo-kp-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; line-height: 1; }
+.oo-kp-list li strong { display: block; font-size: 13px; color: var(--white); font-weight: 500; margin-bottom: 3px; }
+.oo-kp-list li div { font-size: 12px; color: var(--dust); line-height: 1.6; font-weight: 300; }
+
+.overons-right { display: flex; flex-direction: column; gap: 24px; position: sticky; top: 100px; }
+
+.boris-photo-wrap { position: relative; }
+.boris-photo-placeholder {
+  width: 100%; aspect-ratio: 3/4; max-height: 420px;
+  background: var(--bg2); border: 1px solid rgba(232,184,75,.15);
+  position: relative; overflow: hidden;
+}
+.photo-placeholder-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  background: var(--bg2);
+}
+.photo-placeholder-inner span { font-size: 13px; color: var(--dust); letter-spacing: 1px; }
+.photo-placeholder-inner .photo-hint { font-size: 10px; color: rgba(160,152,144,.4); }
+.boris-photo { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.boris-photo-placeholder::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 40px; height: 40px;
+  border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); z-index: 2; pointer-events: none;
+}
+.boris-photo-placeholder::after {
+  content: ''; position: absolute; bottom: 0; right: 0; width: 40px; height: 40px;
+  border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); z-index: 2; pointer-events: none;
+}
+.boris-name-tag {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(30,29,29,.95) 0%, transparent 100%);
+  padding: 40px 20px 18px; display: flex; flex-direction: column;
+}
+.boris-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px; color: var(--white); line-height: 1; }
+.boris-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-top: 4px; }
+
+.boris-quote { background: var(--bg2); border: 1px solid rgba(232,184,75,.12); padding: 28px 28px 22px; position: relative; }
+.bq-mark { font-family: 'Playfair Display', serif; font-size: 80px; color: var(--gold); opacity: .2; line-height: 1; position: absolute; top: -10px; left: 20px; }
+.boris-quote p { font-family: 'Playfair Display', serif; font-size: 14px; line-height: 1.7; color: var(--off); font-style: italic; position: relative; z-index: 1; }
+.boris-quote cite { display: block; margin-top: 12px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-style: normal; }
+
+.oo-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; }
+.oo-stat { background: var(--bg2); padding: 18px 14px; text-align: center; border-bottom: 2px solid transparent; transition: border-color .3s; }
+.oo-stat:hover { border-color: var(--gold); }
+.oo-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); line-height: 1; display: block; }
+.oo-stat-lbl { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dust); margin-top: 4px; display: block; }
+
+@media (max-width:1024px) {
+  .overons { padding: 80px 28px; }
+  .overons-inner { gap: 48px; }
+  .overons-right { position: static; }
+}
+@media (max-width:768px) {
+  .overons { padding: 60px 18px; }
+  .overons-inner { grid-template-columns: 1fr; gap: 40px; }
+  .overons-right { order: -1; }
+  .boris-photo-placeholder { aspect-ratio: 4/3; max-height: 280px; }
+  .oo-intro { font-size: 14px; }
+}
+
+/* RESPONSIVE */
+@media (max-width:1024px) {
+  nav,nav.scrolled { padding-left:28px; padding-right:28px; }
+  .hero-left { padding:130px 28px 60px; }
+  .hero-right { padding:100px 28px 60px 12px; }
+  .services,.why,.process,.contact { padding-left:28px; padding-right:28px; }
+  .cta-band { padding:52px 28px; }
+  footer { padding:44px 28px; gap:36px; }
+  .footer-bottom { padding:16px 28px; }
+  .proc-steps { grid-template-columns:1fr 1fr; }
+  .step::after { display:none; }
+  .why-inner { gap:44px; }
+}
+@media (max-width:768px) {
+  nav { padding:14px 18px; }
+  nav.scrolled { padding:10px 18px; }
+  .nav-links { display:none; }
+  .hamburger { display:flex; }
+  .hero { grid-template-columns:1fr; min-height:100svh; }
+  .hero-left { padding:104px 18px 56px; justify-content:flex-start; }
+  .hero-right { display:none; }
+  .hero-title { font-size:clamp(56px,14vw,76px); }
+  .hero-sub { font-size:13px; max-width:100%; }
+  .scroll-hint { left:18px; bottom:20px; }
+  .marquee-item { font-size:13px; padding:0 22px; }
+  .services,.why,.process,.contact { padding:60px 18px; }
+  .sec-title { margin-bottom:36px; }
+  .services-grid { grid-template-columns:1fr; }
+  .svc-card { padding:32px 24px 52px; }
+  .why-inner { grid-template-columns:1fr; gap:40px; }
+  .why-grid { grid-template-columns:1fr 1fr; }
+  .wg-big { font-size:46px; }
+  .wg-num { padding:24px 16px; }
+  .proc-steps { grid-template-columns:1fr; }
+  .cta-band { padding:48px 18px; grid-template-columns:1fr; gap:24px; }
+  .cta-title { font-size:clamp(30px,8vw,44px); }
+  .contact { grid-template-columns:1fr; gap:44px; }
+  .form-row { grid-template-columns:1fr; }
+  footer { padding:40px 18px; grid-template-columns:1fr; gap:32px; }
+  .footer-brand p { max-width:100%; }
+  .footer-bottom { padding:14px 18px; flex-direction:column; gap:5px; text-align:center; }
+}
+@media (max-width:380px) {
+  .hero-title { font-size:50px; }
+  .hero-actions { flex-direction:column; align-items:flex-start; }
+  .btn-gold,.btn-line { width:100%; justify-content:center; }
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="mob-menu" id="mobMenu">
+  <div class="mob-top">
+    <img src="logo.png" alt="Boris MultiService">
+    <span>Boris <em>MultiService</em></span>
+  </div>
+  <a href="#services" class="ml">Diensten</a>
+  <a href="#over-ons" class="ml">Over Ons</a>
+  <a href="#process" class="ml">Aanpak</a>
+  <a href="#contact" class="ml mob-cta">Contact</a>
+  <div class="mob-bottom">Leeuwarden · Friesland</div>
+</div>
+
+<nav id="navbar">
+  <a href="#home" class="nav-logo">
+    <img src="logo.png" alt="Boris MultiService Logo">
+    <span class="nav-logo-text">Boris <span>Multi</span>Service</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Diensten</a></li>
+    <li><a href="#over-ons">Over Ons</a></li>
+    <li><a href="#process">Aanpak</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero" id="home">
+  <canvas id="particles"></canvas>
+  <div class="hero-left">
+    <div class="hero-eyebrow">Leeuwarden · Friesland · Nederland</div>
+    <h1 class="hero-title">
+      <span class="line"><span>Beton</span></span>
+      <span class="line"><span>Herstel &amp;</span></span>
+      <span class="line"><span style="color:var(--gold)">Vloeren</span></span>
+    </h1>
+    <p class="hero-sub">Jouw vakman in betonherstel, epoxyvloeren, kelderafdichting en kitwerk. Kwaliteit die jaren meegaat.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-gold"><span>Gratis Offerte</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="#services" class="btn-line">Onze diensten <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="card-logo-row">
+        <img src="logo.png" alt="Boris MultiService">
+        <div><div class="card-logo-name">Boris MultiService</div><div class="card-logo-tag">Erkend Vakman · Leeuwarden</div></div>
+      </div>
+      <div class="hero-stats">
+        <div><span class="stat-num" data-target="10">0</span><span class="stat-lbl">Jaar Ervaring</span></div>
+        <div><span class="stat-num" data-target="250">0</span><span class="stat-lbl">Projecten</span></div>
+        <div><span class="stat-num" data-target="98">0</span><span class="stat-lbl">% Tevreden</span></div>
+        <div><span class="stat-num" data-target="4">0</span><span class="stat-lbl">Specialisaties</span></div>
+      </div>
+      <div class="hero-badge"><span style="font-size:18px">🏆</span><div class="badge-txt"><strong>Gecertificeerd Vakman</strong>Betonherstel &amp; vloerspecialist</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>Scroll verder</div>
+</section>
+
+<div class="marquee-band"><div class="marquee-inner">
+  <span class="marquee-item">Beton Herstel<span class="mq-dot"></span></span>
+  <span class="marquee-item">Epoxy Vloeren<span class="mq-dot"></span></span>
+  <span class="marquee-item">Kelderafdichting<span class="mq-dot"></span></span>
+  <span class="marquee-item">Kitwerk<span class="mq-dot"></span></span>
+  <span class="marquee-item">Leeuwarden<span class="mq-dot"></span></span>
+  <span class="marquee-item">Beton Herstel<span class="mq-dot"></span></span>
+  <span class="marquee-item">Epoxy Vloeren<span class="mq-dot"></span></span>
+  <span class="marquee-item">Kelderafdichting<span class="mq-dot"></span></span>
+  <span class="marquee-item">Kitwerk<span class="mq-dot"></span></span>
+  <span class="marquee-item">Leeuwarden<span class="mq-dot"></span></span>
+</div></div>
+
+<section class="services" id="services">
+  <div class="sec-label reveal">Wat wij doen</div>
+  <h2 class="sec-title reveal">Onze <em>Diensten</em></h2>
+  <div class="services-grid">
+    <div class="svc-card reveal"><div class="svc-num">01</div><div class="svc-icon">🔨</div><div class="svc-name">Beton Herstel</div><p class="svc-desc">Deskundige betonherstelservices om de levensduur van uw constructies te verlengen. Van kleine scheuren tot grootschalige renovaties.</p><div class="svc-arrow">→</div></div>
+    <div class="svc-card reveal d1"><div class="svc-num">02</div><div class="svc-icon">✨</div><div class="svc-name">Epoxy Vloeren</div><p class="svc-desc">Duurzame epoxyvloeren voor garages, showrooms en industriële ruimtes. Sterk, mooi en makkelijk te onderhouden.</p><div class="svc-arrow">→</div></div>
+    <div class="svc-card reveal d2"><div class="svc-num">03</div><div class="svc-icon">🔒</div><div class="svc-name">Kelderafdichting &amp; Kitwerk</div><p class="svc-desc">Wateroverlast of lekkende naden? Wij zorgen voor een waterdichte afdichting die de tand des tijds doorstaat.</p><div class="svc-arrow">→</div></div>
+  </div>
+</section>
+
+<!-- ===== OVER ONS ===== -->
+<section class="overons" id="over-ons">
+  <div class="overons-inner">
+
+    <!-- Left: tekst -->
+    <div class="overons-text">
+      <div class="sec-label reveal">Ons verhaal</div>
+      <h2 class="sec-title reveal" style="margin-bottom:32px;">Over <em>Ons</em></h2>
+
+      <p class="oo-intro reveal">
+        Boris MultiService is opgericht in 2018 en is sindsdien uitgegroeid tot een betrouwbare speler op de Nederlandse markt. Wij bieden innovatieve en hoogwaardige oplossingen op het gebied van betonreparatie, epoxyvloeren en waterdichtingssystemen — uitgevoerd door een hecht team van professionals met ruime vakkennis.
+      </p>
+
+      <p class="oo-body reveal">
+        Veiligheid en verantwoordelijkheid staan centraal in alles wat wij doen. Boris MultiService is volledig verzekerd voor alle projecten en activiteiten die wij uitvoeren. Dit biedt onze klanten een extra garantie op veilige werkzaamheden en bescherming tegen eventuele risico's. Wij zijn niet alleen toegewijd aan kwaliteit, maar ook aan de naleving van de hoogste veiligheidsnormen.
+      </p>
+
+      <p class="oo-body reveal">
+        In 2025 — zeven jaar na onze oprichting — blijven wij groeien en breiden wij ons klanten- en projectportfolio uit, met een voortdurende toewijding aan innovatie, kwaliteit en veiligheid.
+      </p>
+
+      <!-- Kernpunten -->
+      <div class="oo-kernpunten reveal">
+        <div class="oo-kp-title">Kernpunten van ons succes</div>
+        <ul class="oo-kp-list">
+          <li>
+            <div class="oo-kp-icon">📅</div>
+            <div>
+              <strong>Opgericht in 2018</strong>
+              Met een snelle en constante groei tot vandaag.
+            </div>
+          </li>
+          <li>
+            <div class="oo-kp-icon">🤝</div>
+            <div>
+              <strong>Strategische samenwerkingen</strong>
+              Partnerships met grote bedrijven in de branche die onze marktpositie hebben versterkt.
+            </div>
+          </li>
+          <li>
+            <div class="oo-kp-icon">🏗️</div>
+            <div>
+              <strong>Grote projecten</strong>
+              Uitgebreide ervaring in betonreparatie, epoxyvloeren en waterdichting bij topbedrijven.
+            </div>
+          </li>
+          <li>
+            <div class="oo-kp-icon">🛡️</div>
+            <div>
+              <strong>Volledig verzekerd</strong>
+              Al onze werkzaamheden zijn gedekt — veiligheid en bescherming gegarandeerd.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right: foto Boris + quote -->
+  </div>
+</section>
+
+<section class="why" id="waarom">
+  <div class="why-inner">
+    <div>
+      <div class="sec-label reveal">Waarom Boris</div>
+      <h2 class="sec-title reveal" style="margin-bottom:0;font-size:clamp(38px,5vw,70px);">Vakmanschap<br>dat je <em>ziet</em></h2>
+      <div class="why-list">
+        <div class="why-item reveal"><div class="why-chk">✓</div><div><div class="wi-title">Jarenlange Ervaring</div><div class="wi-desc">Meer dan 10 jaar actief. Elk probleem kent zijn oplossing.</div></div></div>
+        <div class="why-item reveal d1"><div class="why-chk">✓</div><div><div class="wi-title">Professioneel &amp; Betrouwbaar</div><div class="wi-desc">Wij houden ons aan afspraken, budgetten en tijdslijnen.</div></div></div>
+        <div class="why-item reveal d2"><div class="why-chk">✓</div><div><div class="wi-title">Particulier &amp; Zakelijk</div><div class="wi-desc">Van kleine klussen tot grote projecten — voor elke schaal.</div></div></div>
+        <div class="why-item reveal d3"><div class="why-chk">✓</div><div><div class="wi-title">Hoogwaardige Materialen</div><div class="wi-desc">Alleen de beste producten. Kwaliteit die u ziet én voelt.</div></div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="why-grid">
+        <div class="wg-num"><span class="wg-big">10+</span><span class="wg-lbl">Jaar Ervaring</span></div>
+        <div class="wg-num"><span class="wg-big">250+</span><span class="wg-lbl">Projecten</span></div>
+        <div class="wg-num"><span class="wg-big">98%</span><span class="wg-lbl">Klanttevredenheid</span></div>
+        <div class="wg-num"><span class="wg-big">4</span><span class="wg-lbl">Specialisaties</span></div>
+        <div class="why-quote"><p>Tevreden klanten zijn ons beste visitekaartje. Wij streven altijd naar de hoogste kwaliteitsnormen.</p><cite>— Boris, Eigenaar</cite></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="sec-label reveal">Hoe wij werken</div>
+  <h2 class="sec-title reveal">Onze <em>Aanpak</em></h2>
+  <div class="proc-steps">
+    <div class="step reveal"><div class="step-num">01</div><div class="step-title">Contact &amp; Intake</div><p class="step-desc">U neemt contact op en beschrijft uw situatie. Wij stellen de juiste vragen om uw project te begrijpen.</p></div>
+    <div class="step reveal d1"><div class="step-num">02</div><div class="step-title">Inspectie op Locatie</div><p class="step-desc">Wij komen langs voor een gratis inspectie en meting voor een nauwkeurige offerte op maat.</p></div>
+    <div class="step reveal d2"><div class="step-num">03</div><div class="step-title">Offerte &amp; Planning</div><p class="step-desc">U ontvangt een heldere offerte zonder verborgen kosten. Na akkoord plannen wij het werk in.</p></div>
+    <div class="step reveal d3"><div class="step-num">04</div><div class="step-title">Uitvoering &amp; Oplevering</div><p class="step-desc">Vakkundige uitvoering met eindcontrole en nazorg. Netjes opgeleverd, altijd.</p></div>
+  </div>
+</section>
+
+<div class="cta-band reveal">
+  <div><div class="cta-lbl">Klaar om te starten?</div><div class="cta-title">Vraag vandaag nog<br>uw gratis offerte aan</div></div>
+  <a href="#contact" class="btn-dark"><span>Contact opnemen</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+
+<!-- ===== PROJECTEN ===== -->
+<section class="projecten" id="projecten" style="display:none;">
+  <div class="proj-header">
+    <div>
+      <div class="sec-label reveal">Ons werk</div>
+      <h2 class="sec-title reveal" style="margin-bottom:0;">Onze <em>Projecten</em></h2>
+    </div>
+    <p class="proj-intro reveal">Een greep uit onze uitgevoerde projecten. Klik op een foto voor een grotere weergave.</p>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="proj-filters reveal">
+    <button class="pf-btn active" data-filter="all">Alle projecten</button>
+    <button class="pf-btn" data-filter="betonherstel">Betonherstel</button>
+    <button class="pf-btn" data-filter="kelderafdichting">Kelderafdichting</button>
+    <button class="pf-btn" data-filter="kitwerk">Kitwerk</button>
+    <button class="pf-btn" data-filter="vloeren">Vloeren</button>
+  </div>
+
+  <!-- Grid -->
+  <div class="proj-grid" id="projGrid">
+
+    <!-- Placeholder kaarten — vervang de data-src en data-cat per foto -->
+    <div class="proj-card reveal" data-cat="betonherstel">
+      <div class="proj-img-wrap">
+        <div class="proj-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(232,184,75,0.3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="m3 9 4-4 4 4 4-6 4 6"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>
+          <span>Foto toevoegen</span>
+        </div>
+        <!-- Vervang src="" met het pad naar je foto -->
+        <img src="" alt="Betonherstel project" class="proj-photo" loading="lazy">
+        <div class="proj-overlay">
+          <div class="proj-zoom">⤢</div>
+        </div>
+      </div>
+      <div class="proj-info">
+        <span class="proj-cat-tag">Betonherstel</span>
+        <div class="proj-desc">Projectomschrijving</div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal d1" data-cat="kelderafdichting">
+      <div class="proj-img-wrap">
+        <div class="proj-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(232,184,75,0.3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="m3 9 4-4 4 4 4-6 4 6"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>
+          <span>Foto toevoegen</span>
+        </div>
+        <img src="" alt="Kelderafdichting project" class="proj-photo" loading="lazy">
+        <div class="proj-overlay"><div class="proj-zoom">⤢</div></div>
+      </div>
+      <div class="proj-info">
+        <span class="proj-cat-tag">Kelderafdichting</span>
+        <div class="proj-desc">Projectomschrijving</div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal d2" data-cat="kitwerk">
+      <div class="proj-img-wrap">
+        <div class="proj-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(232,184,75,0.3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="m3 9 4-4 4 4 4-6 4 6"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>
+          <span>Foto toevoegen</span>
+        </div>
+        <img src="" alt="Kitwerk project" class="proj-photo" loading="lazy">
+        <div class="proj-overlay"><div class="proj-zoom">⤢</div></div>
+      </div>
+      <div class="proj-info">
+        <span class="proj-cat-tag">Kitwerk</span>
+        <div class="proj-desc">Projectomschrijving</div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal d3" data-cat="betonherstel">
+      <div class="proj-img-wrap">
+        <div class="proj-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(232,184,75,0.3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="m3 9 4-4 4 4 4-6 4 6"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>
+          <span>Foto toevoegen</span>
+        </div>
+        <img src="" alt="Betonherstel project" class="proj-photo" loading="lazy">
+        <div class="proj-overlay"><div class="proj-zoom">⤢</div></div>
+      </div>
+      <div class="proj-info">
+        <span class="proj-cat-tag">Betonherstel</span>
+        <div class="proj-desc">Projectomschrijving</div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal" data-cat="kelderafdichting">
+      <div class="proj-img-wrap">
+        <div class="proj-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(232,184,75,0.3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="m3 9 4-4 4 4 4-6 4 6"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>
+          <span>Foto toevoegen</span>
+        </div>
+        <img src="" alt="Kelderafdichting project" class="proj-photo" loading="lazy">
+        <div class="proj-overlay"><div class="proj-zoom">⤢</div></div>
+      </div>
+      <div class="proj-info">
+        <span class="proj-cat-tag">Kelderafdichting</span>
+        <div class="proj-desc">Projectomschrijving</div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal d1" data-cat="kitwerk">
+      <div class="proj-img-wrap">
+        <div class="proj-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(232,184,75,0.3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="m3 9 4-4 4 4 4-6 4 6"/><circle cx="8.5" cy="13.5" r="1.5"/></svg>
+          <span>Foto toevoegen</span>
+        </div>
+        <img src="" alt="Kitwerk project" class="proj-photo" loading="lazy">
+        <div class="proj-overlay"><div class="proj-zoom">⤢</div></div>
+      </div>
+      <div class="proj-info">
+        <span class="proj-cat-tag">Kitwerk</span>
+        <div class="proj-desc">Projectomschrijving</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Voeg meer foto's toe knop -->
+  <div class="proj-more reveal">
+    <p class="proj-more-hint">💡 Foto's toevoegen: zet afbeeldingen in dezelfde map als index.html en vul het <code>src</code> attribuut in per kaart.</p>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-backdrop" id="lbBackdrop"></div>
+  <button class="lb-close" id="lbClose">✕</button>
+  <button class="lb-prev" id="lbPrev">‹</button>
+  <button class="lb-next" id="lbNext">›</button>
+  <div class="lb-img-wrap">
+    <img src="" alt="" id="lbImg" class="lb-img">
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+</div>
+
+<style>
+/* ===== PROJECTEN ===== */
+.projecten { padding: 100px 56px; background: var(--bg2); }
+
+.proj-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 40px; margin-bottom: 40px; flex-wrap: wrap;
+}
+.proj-intro {
+  font-size: 14px; color: var(--dust); font-weight: 300;
+  line-height: 1.7; max-width: 340px; text-align: right;
+}
+
+/* Filter buttons */
+.proj-filters {
+  display: flex; gap: 3px; margin-bottom: 32px; flex-wrap: wrap;
+}
+.pf-btn {
+  background: var(--bg3); color: var(--dust); border: none;
+  padding: 10px 22px; font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .3s; border-bottom: 2px solid transparent;
+}
+.pf-btn:hover { color: var(--white); background: #3e3d3d; }
+.pf-btn.active { background: var(--gold); color: var(--dark); border-color: var(--gold2); }
+
+/* Grid */
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.proj-card {
+  position: relative; overflow: hidden; cursor: pointer;
+  transition: opacity .3s, transform .3s;
+}
+.proj-card.hidden { display: none; }
+
+.proj-img-wrap {
+  position: relative; aspect-ratio: 4/3; overflow: hidden;
+  background: var(--bg3);
+}
+
+.proj-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; background: var(--bg3);
+  border: 1px dashed rgba(232,184,75,.2);
+  transition: background .3s;
+}
+.proj-placeholder span {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(160,152,144,.4);
+}
+.proj-card:hover .proj-placeholder { background: #3a3939; }
+
+.proj-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; display: none;
+  transition: transform .5s cubic-bezier(.16,1,.3,1);
+}
+.proj-photo.loaded { display: block; }
+.proj-card:hover .proj-photo { transform: scale(1.05); }
+
+/* Show placeholder only when no photo */
+.proj-photo[src=""]:not(.loaded) + .proj-overlay { display: none; }
+
+.proj-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,24,22,.85) 0%, rgba(26,24,22,.1) 60%, transparent 100%);
+  opacity: 0; transition: opacity .35s; display: flex; align-items: center; justify-content: center;
+}
+.proj-card:hover .proj-overlay { opacity: 1; }
+.proj-zoom {
+  width: 44px; height: 44px; border: 1.5px solid rgba(255,255,255,.7);
+  display: grid; place-items: center; color: var(--white);
+  font-size: 18px; transform: scale(0.7); transition: transform .3s;
+}
+.proj-card:hover .proj-zoom { transform: scale(1); }
+
+.proj-info {
+  background: var(--bg3); padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.proj-cat-tag {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap; background: rgba(232,184,75,.08);
+  padding: 4px 10px; border: 1px solid rgba(232,184,75,.18);
+}
+.proj-desc {
+  font-size: 12px; color: var(--dust); font-weight: 300;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.proj-more { margin-top: 32px; text-align: center; }
+.proj-more-hint {
+  display: inline-block; font-size: 12px; color: var(--dust);
+  background: rgba(255,255,255,.03); border: 1px dashed rgba(232,184,75,.2);
+  padding: 14px 24px; line-height: 1.6;
+}
+.proj-more-hint code { color: var(--gold); font-size: 11px; }
+
+/* ===== LIGHTBOX ===== */
+.lightbox {
+  position: fixed; inset: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.lightbox.open { opacity: 1; pointer-events: all; }
+
+.lb-backdrop {
+  position: absolute; inset: 0; background: rgba(0,0,0,.92);
+  cursor: pointer;
+}
+.lb-img-wrap {
+  position: relative; z-index: 1; max-width: 90vw; max-height: 90vh;
+  display: flex; flex-direction: column; align-items: center;
+}
+.lb-img {
+  max-width: 90vw; max-height: 80vh; object-fit: contain;
+  box-shadow: 0 32px 80px rgba(0,0,0,.6);
+  transform: scale(.95); transition: transform .35s cubic-bezier(.16,1,.3,1);
+  border: 1px solid rgba(232,184,75,.15);
+}
+.lightbox.open .lb-img { transform: scale(1); }
+
+.lb-caption {
+  margin-top: 14px; font-size: 12px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold);
+}
+.lb-close {
+  position: absolute; top: 20px; right: 24px; z-index: 2;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+  color: var(--white); width: 40px; height: 40px; font-size: 16px;
+  cursor: pointer; transition: all .3s; display: grid; place-items: center;
+}
+.lb-close:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+
+.lb-prev, .lb-next {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+  color: var(--white); width: 48px; height: 48px; font-size: 28px;
+  cursor: pointer; transition: all .3s; display: grid; place-items: center;
+  line-height: 1;
+}
+.lb-prev { left: 20px; }
+.lb-next { right: 20px; }
+.lb-prev:hover, .lb-next:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+
+/* Responsive projecten */
+@media (max-width: 1024px) {
+  .projecten { padding: 80px 28px; }
+  .proj-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .projecten { padding: 60px 18px; }
+  .proj-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .proj-intro { text-align: left; max-width: 100%; }
+  .proj-grid { grid-template-columns: repeat(2, 1fr); }
+  .proj-filters { gap: 4px; }
+  .pf-btn { padding: 9px 14px; font-size: 10px; }
+  .lb-prev { left: 8px; }
+  .lb-next { right: 8px; }
+}
+@media (max-width: 480px) {
+  .proj-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+// ---- Project filter ----
+document.querySelectorAll('.pf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pf-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.proj-card').forEach(card => {
+      if (filter === 'all' || card.dataset.cat === filter) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  });
+});
+
+// ---- Photo loaded state ----
+document.querySelectorAll('.proj-photo').forEach(img => {
+  if (img.src && img.src !== window.location.href) {
+    img.classList.add('loaded');
+    img.previousElementSibling.style.display = 'none';
+  }
+  img.addEventListener('load', function() {
+    this.classList.add('loaded');
+    const placeholder = this.parentElement.querySelector('.proj-placeholder');
+    if (placeholder) placeholder.style.display = 'none';
+  });
+});
+
+// ---- Lightbox ----
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCaption = document.getElementById('lbCaption');
+let currentPhotos = [];
+let currentIndex = 0;
+
+function getVisiblePhotos() {
+  return [...document.querySelectorAll('.proj-card:not(.hidden) .proj-photo.loaded')];
+}
+
+function openLightbox(img) {
+  currentPhotos = getVisiblePhotos();
+  currentIndex = currentPhotos.indexOf(img);
+  showLbPhoto(currentIndex);
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function showLbPhoto(idx) {
+  const photo = currentPhotos[idx];
+  if (!photo) return;
+  lbImg.src = photo.src;
+  lbImg.alt = photo.alt;
+  const card = photo.closest('.proj-card');
+  lbCaption.textContent = card ? card.querySelector('.proj-cat-tag').textContent : '';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.proj-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const photo = card.querySelector('.proj-photo.loaded');
+    if (photo) openLightbox(photo);
+  });
+});
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbBackdrop').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
+  showLbPhoto(currentIndex);
+});
+document.getElementById('lbNext').addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % currentPhotos.length;
+  showLbPhoto(currentIndex);
+});
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length; showLbPhoto(currentIndex); }
+  if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentPhotos.length; showLbPhoto(currentIndex); }
+});
+</script>
+
+<section class="contact" id="contact">
+  <div>
+    <div class="sec-label reveal">Neem contact op</div>
+    <h2 class="sec-title reveal" style="font-size:clamp(34px,4.5vw,58px);margin-bottom:0;">Laten we<br><em>Praten</em></h2>
+    <div class="contact-details">
+      <div class="contact-row reveal"><div class="ci">📍</div><div><div class="cr-lbl">Locatie</div><div class="cr-val">Leeuwarden, Friesland</div></div></div>
+      <div class="contact-row reveal d1"><div class="ci">📞</div><div><div class="cr-lbl">Telefoon</div><div class="cr-val">Bel ons voor een afspraak</div></div></div>
+      <div class="contact-row reveal d2"><div class="ci">🌐</div><div><div class="cr-lbl">Website</div><div class="cr-val">borismultiservice.nl</div></div></div>
+      <div class="contact-row reveal d3"><div class="ci">🕐</div><div><div class="cr-lbl">Bereikbaar</div><div class="cr-val">Ma – Vr: 07:00 – 18:00</div></div></div>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="sec-label" style="margin-bottom:24px;">Stuur een bericht</div>
+    <div id="formSuccess" style="display:none; padding:20px; background:rgba(76,175,80,0.1); border:1px solid rgba(76,175,80,0.3); border-left:3px solid #4caf50; margin-bottom:20px;">
+      <p style="color:#4caf50; font-size:14px;">✓ &nbsp;Uw bericht is verstuurd! Wij nemen zo snel mogelijk contact met u op.</p>
+    </div>
+    <div id="formError" style="display:none; padding:20px; background:rgba(196,98,45,0.1); border:1px solid rgba(196,98,45,0.3); border-left:3px solid #c4622d; margin-bottom:20px;">
+      <p style="color:#c4622d; font-size:14px;">✗ &nbsp;Er is iets misgegaan. Probeer het opnieuw of mail direct naar info@borismultiservice.nl</p>
+    </div>
+    <div class="form-row">
+      <div class="ff"><label>Voornaam</label><input type="text" id="f_voornaam" name="voornaam" placeholder="Jan" required></div>
+      <div class="ff"><label>Achternaam</label><input type="text" id="f_achternaam" name="achternaam" placeholder="de Vries" required></div>
+    </div>
+    <div class="ff"><label>E-mailadres</label><input type="email" id="f_email" name="email" placeholder="jan@voorbeeld.nl" required></div>
+    <div class="ff"><label>Telefoonnummer</label><input type="tel" id="f_telefoon" name="telefoon" placeholder="+31 6 12345678"></div>
+    <div class="ff"><label>Dienst</label><select id="f_dienst" name="dienst"><option value="">Selecteer een dienst...</option><option>Beton Herstel</option><option>Epoxy Vloeren</option><option>Kelderafdichting &amp; Kitwerk</option><option>Anders</option></select></div>
+    <div class="ff"><label>Bericht</label><textarea id="f_bericht" name="bericht" placeholder="Beschrijf kort uw project of vraag..." required></textarea></div>
+    <button class="form-btn" id="formSubmit"><span>Verstuur Bericht</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <a href="#home" class="footer-logo"><img src="logo.png" alt="Boris MultiService"><span class="footer-logo-txt">Boris <span>Multi</span>Service</span></a>
+    <p>Uw betrouwbare partner in betonherstel, epoxyvloeren in Leeuwarden en omgeving.</p>
+  </div>
+  <div><div class="fc-title">Diensten</div><ul class="fc-links"><li><a href="#services">Beton Herstel</a></li><li><a href="#services">Epoxy Vloeren</a></li><li><a href="#services">Kelderafdichting</a></li></ul></div>
+  <div><div class="fc-title">Navigatie</div><ul class="fc-links"><li><a href="#home">Home</a></li><li><a href="#over-ons">Over Ons</a></li><li><a href="#process">Aanpak</a></li><li><a href="#contact">Contact</a></li></ul></div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2026 Boris MultiService · Leeuwarden · Alle rechten voorbehouden</p>
+  <p>Gemaakt met <span>♥</span> voor vakmanschap</p>
+</div>
+
+<script>
+const isMouse = window.matchMedia('(pointer:fine)').matches;
+if (isMouse) {
+  const cur = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+  (function loop(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+  document.querySelectorAll('a,button,.svc-card,.why-item,.step').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ cur.style.width='16px'; cur.style.height='16px'; ring.style.width='52px'; ring.style.height='52px'; });
+    el.addEventListener('mouseleave',()=>{ cur.style.width='10px'; cur.style.height='10px'; ring.style.width='38px'; ring.style.height='38px'; });
+  });
+}
+const ham=document.getElementById('hamburger'),mob=document.getElementById('mobMenu');
+ham.addEventListener('click',()=>{ ham.classList.toggle('open'); mob.classList.toggle('open'); document.body.style.overflow=mob.classList.contains('open')?'hidden':''; });
+document.querySelectorAll('.ml').forEach(a=>a.addEventListener('click',()=>{ ham.classList.remove('open'); mob.classList.remove('open'); document.body.style.overflow=''; }));
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60),{passive:true});
+const ro=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }),{threshold:.1,rootMargin:'0px 0px -28px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+function countUp(el,target,dur=1600){ let s=null; const run=ts=>{ if(!s)s=ts; const p=Math.min((ts-s)/dur,1),e=1-Math.pow(1-p,3); el.textContent=Math.floor(e*target); if(p<1)requestAnimationFrame(run); else el.textContent=target; }; requestAnimationFrame(run); }
+const co=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ countUp(e.target,+e.target.dataset.target); co.unobserve(e.target); } }),{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>co.observe(el));
+const cvs=document.getElementById('particles'),ctx=cvs.getContext('2d');
+let W,H,pts=[];
+const resize=()=>{ W=cvs.width=cvs.offsetWidth; H=cvs.height=cvs.offsetHeight; };
+resize(); window.addEventListener('resize',resize,{passive:true});
+const N=window.matchMedia('(pointer:coarse)').matches?35:70;
+class P { constructor(){ this.reset(true); } reset(r){ this.x=Math.random()*W; this.y=r?Math.random()*H:H+4; this.vx=(Math.random()-.5)*.3; this.vy=-(Math.random()*.5+.1); this.r=Math.random()*1.3+.2; this.a=Math.random()*.3+.04; this.l=0; this.m=Math.random()*340+160; } tick(){ this.x+=this.vx; this.y+=this.vy; this.l++; if(this.l>this.m||this.y<-4)this.reset(false); } draw(){ const f=this.l<36?this.l/36:this.l>this.m-36?(this.m-this.l)/36:1; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=`rgba(232,184,75,${f*this.a})`; ctx.fill(); } }
+for(let i=0;i<N;i++){ const p=new P(); p.l=Math.random()*p.m; pts.push(p); }
+(function loop(){ ctx.clearRect(0,0,W,H); pts.forEach(p=>{p.tick();p.draw();}); requestAnimationFrame(loop); })();
+document.getElementById('formSubmit').addEventListener('click', async function(e) {
+  e.preventDefault();
+  const voornaam = document.getElementById('f_voornaam').value.trim();
+  const achternaam = document.getElementById('f_achternaam').value.trim();
+  const email = document.getElementById('f_email').value.trim();
+  const bericht = document.getElementById('f_bericht').value.trim();
+  const successEl = document.getElementById('formSuccess');
+  const errorEl = document.getElementById('formError');
+  successEl.style.display = 'none';
+  errorEl.style.display = 'none';
+  if (!voornaam || !email || !bericht) {
+    errorEl.querySelector('p').textContent = '✗  Vul alle verplichte velden in (naam, e-mail en bericht).';
+    errorEl.style.display = 'block';
+    return;
+  }
+  const btn = this;
+  btn.innerHTML = '<span>Versturen...</span>';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  const data = new FormData();
+  data.append('voornaam', voornaam);
+  data.append('achternaam', document.getElementById('f_achternaam').value.trim());
+  data.append('email', email);
+  data.append('telefoon', document.getElementById('f_telefoon').value.trim());
+  data.append('dienst', document.getElementById('f_dienst').value);
+  data.append('bericht', bericht);
+  try {
+    const res = await fetch('mail.php', { method: 'POST', body: data });
+    const json = await res.json();
+    if (json.success) {
+      successEl.style.display = 'block';
+      ['f_voornaam','f_achternaam','f_email','f_telefoon','f_bericht'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('f_dienst').selectedIndex = 0;
+      btn.innerHTML = '<span>Verstuurd ✓</span>';
+      btn.style.background = '#4caf50';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.innerHTML = '<span>Verstuur Bericht</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+        btn.style.background = ''; btn.style.color = ''; btn.style.opacity = ''; btn.disabled = false;
+      }, 4000);
+    } else {
+      throw new Error(json.error || 'Onbekende fout');
+    }
+  } catch(err) {
+    errorEl.style.display = 'block';
+    btn.innerHTML = '<span>Verstuur Bericht</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    btn.style.opacity = ''; btn.disabled = false;
+  }
+});
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{ const t=document.querySelector(a.getAttribute('href')); if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});} }));
+</script>
+<!-- ===== COOKIE POPUP ===== -->
+<div class="cookie-overlay" id="cookieOverlay"></div>
+<div class="cookie-popup" id="cookiePopup">
+  <div class="cookie-icon">🍪</div>
+  <div class="cookie-content">
+    <h3 class="cookie-title">Wij gebruiken cookies</h3>
+    <p class="cookie-text">Boris MultiService gebruikt cookies om de website goed te laten werken en uw ervaring te verbeteren. Functionele cookies zijn altijd actief. U kunt zelf kiezen of u analytische cookies accepteert.</p>
+    <div class="cookie-links">
+      <a href="#" class="cookie-link">Privacybeleid</a>
+      <span>·</span>
+      <a href="#" class="cookie-link">Cookiebeleid</a>
+    </div>
+  </div>
+  <div class="cookie-actions">
+    <button class="cookie-btn-all" id="cookieAcceptAll">Alles accepteren</button>
+    <button class="cookie-btn-essential" id="cookieEssential">Alleen noodzakelijk</button>
+  </div>
+  <button class="cookie-close" id="cookieClose" aria-label="Sluiten">✕</button>
+</div>
+
+<style>
+.cookie-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+  z-index: 998; opacity: 0; pointer-events: none;
+  transition: opacity .4s;
+}
+.cookie-overlay.show { opacity: 1; pointer-events: all; }
+
+.cookie-popup {
+  position: fixed;
+  bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px);
+  width: min(680px, calc(100vw - 32px));
+  background: var(--bg2);
+  border: 1px solid rgba(232,184,75,.25);
+  border-bottom: 3px solid var(--gold);
+  padding: 28px 28px 24px;
+  z-index: 999;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: start;
+  box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  opacity: 0; pointer-events: none;
+  transition: transform .5s cubic-bezier(.16,1,.3,1), opacity .4s;
+}
+.cookie-popup.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1; pointer-events: all;
+}
+
+.cookie-icon { font-size: 28px; line-height: 1; margin-top: 2px; }
+
+.cookie-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: 1.5px;
+  color: var(--white); margin-bottom: 8px;
+}
+.cookie-text {
+  font-size: 12px; line-height: 1.7;
+  color: var(--dust); font-weight: 300; margin-bottom: 10px;
+}
+.cookie-links { display: flex; gap: 8px; align-items: center; }
+.cookie-link {
+  font-size: 11px; color: var(--gold);
+  text-decoration: none; letter-spacing: .5px;
+  transition: opacity .2s;
+}
+.cookie-link:hover { opacity: .7; }
+.cookie-links span { color: var(--dust); font-size: 11px; }
+
+.cookie-actions {
+  display: flex; flex-direction: column; gap: 8px;
+  min-width: 160px; justify-content: center;
+}
+.cookie-btn-all {
+  background: var(--gold); color: var(--dark);
+  border: none; padding: 11px 20px;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: background .3s, transform .2s; white-space: nowrap;
+}
+.cookie-btn-all:hover { background: var(--gold2); transform: translateY(-1px); }
+
+.cookie-btn-essential {
+  background: transparent; color: var(--dust);
+  border: 1px solid rgba(255,255,255,.1); padding: 10px 20px;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all .3s; white-space: nowrap;
+}
+.cookie-btn-essential:hover { border-color: var(--gold); color: var(--white); }
+
+.cookie-close {
+  position: absolute; top: 12px; right: 14px;
+  background: none; border: none; color: var(--dust);
+  font-size: 14px; cursor: pointer; padding: 4px 6px;
+  transition: color .2s; line-height: 1;
+}
+.cookie-close:hover { color: var(--white); }
+
+@media (max-width: 600px) {
+  .cookie-popup {
+    grid-template-columns: 1fr;
+    bottom: 16px; padding: 24px 20px 20px;
+    gap: 14px;
+  }
+  .cookie-icon { display: none; }
+  .cookie-actions { flex-direction: row; }
+  .cookie-btn-all, .cookie-btn-essential { flex: 1; padding: 11px 10px; font-size: 10px; }
+}
+</style>
+
+<script>
+(function() {
+  const popup = document.getElementById('cookiePopup');
+  const overlay = document.getElementById('cookieOverlay');
+
+  function showCookie() {
+    popup.classList.add('show');
+    overlay.classList.add('show');
+  }
+  function hideCookie() {
+    popup.classList.remove('show');
+    overlay.classList.remove('show');
+  }
+  function accept(type) {
+    localStorage.setItem('bms_cookie_consent', type);
+    hideCookie();
+  }
+
+  // Show if not yet accepted
+  if (!localStorage.getItem('bms_cookie_consent')) {
+    setTimeout(showCookie, 1200);
+  }
+
+  document.getElementById('cookieAcceptAll').addEventListener('click', () => accept('all'));
+  document.getElementById('cookieEssential').addEventListener('click', () => accept('essential'));
+  document.getElementById('cookieClose').addEventListener('click', () => accept('essential'));
+  overlay.addEventListener('click', () => accept('essential'));
+})();
+</script>
+
+</body>
+</html>
