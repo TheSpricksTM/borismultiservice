@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Bekijk de projectfoto's van Boris Multiservice — betonherstel, epoxyvloeren en kelder afdichting."/>
+<title>Projectfoto's – Boris Multiservice | Betonherstel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C8960C;
+    --gold-light: #E8B84B;
+    --dark: #1c1c1c;
+    --dark2: #2b2b2b;
+    --light: #f5f3ef;
+  }
+  body { background: var(--light); color: var(--dark); font-family: 'Barlow', sans-serif; font-weight: 300; }
+
+  /* HERO */
+  .hero { background: var(--dark2); padding: 56px 48px 40px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 360px; height: 360px; border: 50px solid var(--gold); border-radius: 50%; opacity: 0.04; }
+  .hero-label { font-size: 11px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+  .hero h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 5vw, 56px); font-weight: 600; color: #fff; line-height: 1.1; max-width: 520px; }
+  .hero h2 em { font-style: italic; color: var(--gold-light); }
+  .hero p { margin-top: 14px; color: #888; font-size: 14px; max-width: 400px; line-height: 1.7; }
+
+  /* FILTER */
+  .filter-bar { padding: 28px 48px 0; display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid #ddd; background: var(--light); }
+  .filter-btn { padding: 7px 18px; background: none; border: 1px solid #ccc; border-radius: 2px; font-family: 'Barlow', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #888; cursor: pointer; transition: all 0.2s; margin-bottom: -1px; }
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .filter-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+  /* GALLERY */
+  .gallery-section { padding: 48px; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; padding-bottom: 12px; border-bottom: 1px solid #e0ddd8; }
+  .project-block { margin-bottom: 48px; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; cursor: pointer; }
+  .photo-wrap { position: relative; overflow: hidden; }
+  .photo-wrap img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .pair-grid:hover .photo-wrap img { transform: scale(1.03); }
+  .photo-wrap::after { content: ''; position: absolute; inset: 0; border: 0px solid var(--gold); transition: border-width 0.3s; pointer-events: none; }
+  .pair-grid:hover .photo-wrap::after { border-width: 3px; }
+  .photo-label { position: absolute; top: 14px; left: 14px; padding: 4px 12px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 500; }
+  .label-before { background: rgba(0,0,0,0.65); color: #ccc; }
+  .label-after { background: var(--gold); color: #fff; }
+  .project-caption { padding: 16px 0 0; display: flex; justify-content: space-between; align-items: flex-start; }
+  .project-caption h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; }
+  .project-caption p { font-size: 12px; color: #999; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+  .project-num { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 700; color: #e8e4de; line-height: 1; }
+
+  /* PHOTO GRID (epoxy/kelder) */
+  .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 6px; margin-bottom: 16px; }
+  .photo-grid-item { position: relative; overflow: hidden; cursor: pointer; }
+  .photo-grid-item img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .photo-grid-item:hover img { transform: scale(1.03); }
+  .step-label { position: absolute; top: 14px; left: 14px; padding: 4px 12px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; }
+
+  /* LIGHTBOX */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 1000; align-items: center; justify-content: center; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border: 2px solid var(--gold); }
+  .lb-close { position: absolute; top: 20px; right: 28px; color: #fff; font-size: 36px; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; line-height: 1; }
+  .lb-close:hover { opacity: 1; color: var(--gold); }
+  .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); color: #fff; font-size: 28px; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; padding: 20px; }
+  .lb-nav:hover { opacity: 1; color: var(--gold); }
+  .lb-prev { left: 12px; }
+  .lb-next { right: 12px; }
+  .lb-caption { position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; color: #888; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* FOOTER */
+  footer { background: var(--dark); padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #333; margin-top: 24px; }
+  footer p { color: #555; font-size: 12px; letter-spacing: 1px; }
+  footer a { color: var(--gold); text-decoration: none; font-size: 12px; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 28px; }
+    .filter-bar { padding: 20px 20px 0; }
+    .gallery-section { padding: 28px 20px; }
+    footer { padding: 16px 20px; flex-direction: column; gap: 8px; }
+    .pair-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-label">Ons werk in beeld</p>
+  <h2>Projectfoto's & <em>Resultaten</em></h2>
+  <p>Een overzicht van uitgevoerde projecten op het gebied van betonherstel, epoxyvloeren en kelder afdichting.</p>
+</div>
+
+<!-- FILTER -->
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">Alle projecten</button>
+  <button class="filter-btn" data-filter="betonherstel">Betonherstel</button>
+  <button class="filter-btn" data-filter="epoxyvloeren">Epoxyvloeren</button>
+  <button class="filter-btn" data-filter="kelder">Kelder afdichting</button>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+
+  <!-- BETONHERSTEL -->
+  <div class="section-block" data-cat="betonherstel">
+    <p class="section-title">Betonherstel — Voor & Na</p>
+
+    <div class="project-block">
+      <div class="pair-grid" onclick="lb(0)">
+        <div class="photo-wrap"><img src="fotos/beton-01-voor.jpg" alt="Voor"/><span class="photo-label label-before">Voor</span></div>
+        <div class="photo-wrap"><img src="fotos/beton-01-na.jpg" alt="Na"/><span class="photo-label label-after">Na</span></div>
+      </div>
+      <div class="project-caption"><div><h3>Balkondekschade — Herstel</h3><p>Betonherstel · Balkon</p></div><div class="project-num">01</div></div>
+    </div>
+
+    <div class="project-block">
+      <div class="pair-grid" onclick="lb(2)">
+        <div class="photo-wrap"><img src="fotos/beton-02-voor.jpg" alt="Voor"/><span class="photo-label label-before">Voor</span></div>
+        <div class="photo-wrap"><img src="fotos/beton-02-na.jpg" alt="Na"/><span class="photo-label label-after">Na</span></div>
+      </div>
+      <div class="project-caption"><div><h3>Onderdoorgang — Betonherstel</h3><p>Betonherstel · Brug</p></div><div class="project-num">02</div></div>
+    </div>
+
+    <div class="project-block">
+      <div class="pair-grid" onclick="lb(4)">
+        <div class="photo-wrap"><img src="fotos/beton-03-voor.jpg" alt="Voor"/><span class="photo-label label-before">Voor</span></div>
+        <div class="photo-wrap"><img src="fotos/beton-03-na.jpg" alt="Na"/><span class="photo-label label-after">Na</span></div>
+      </div>
+      <div class="project-caption"><div><h3>Gevelschade — Herstel & Afwerking</h3><p>Betonherstel · Gevel</p></div><div class="project-num">03</div></div>
+    </div>
+
+    <div class="project-block">
+      <div class="pair-grid" onclick="lb(6)">
+        <div class="photo-wrap"><img src="fotos/beton-04-voor.jpg" alt="Voor"/><span class="photo-label label-before">Voor</span></div>
+        <div class="photo-wrap"><img src="fotos/beton-04-na.jpg" alt="Na"/><span class="photo-label label-after">Na</span></div>
+      </div>
+      <div class="project-caption"><div><h3>Dakrand & Consoles — Herstel</h3><p>Betonherstel · Dakrand</p></div><div class="project-num">04</div></div>
+    </div>
+  </div>
+
+  <!-- EPOXYVLOEREN -->
+  <div class="section-block" data-cat="epoxyvloeren" style="margin-top:56px;">
+    <p class="section-title">Epoxyvloeren — Afwerking & Coating</p>
+    <div class="photo-grid">
+      <div class="photo-grid-item" onclick="lbDirect('fotos/epoxy-01.jpg','Balkon epoxy coating')"><img src="fotos/epoxy-01.jpg" alt="Epoxy"/><span class="step-label label-after">Epoxy</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/epoxy-02.jpg','Epoxyvloer grijs')"><img src="fotos/epoxy-02.jpg" alt="Epoxy"/><span class="step-label label-after">Epoxy</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/epoxy-03.jpg','Epoxyvloer wit')"><img src="fotos/epoxy-03.jpg" alt="Epoxy"/><span class="step-label label-after">Epoxy</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/epoxy-04.jpg','Epoxyvloer taupe')"><img src="fotos/epoxy-04.jpg" alt="Epoxy"/><span class="step-label label-after">Epoxy</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/epoxy-05.jpg','Epoxyvloer lichtgrijs')"><img src="fotos/epoxy-05.jpg" alt="Epoxy"/><span class="step-label label-after">Epoxy</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/epoxy-06.jpg','Epoxyvloer gang')"><img src="fotos/epoxy-06.jpg" alt="Epoxy"/><span class="step-label label-after">Epoxy</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/epoxy-07.jpg','Epoxyvloer grote ruimte')"><img src="fotos/epoxy-07.jpg" alt="Epoxy"/><span class="step-label label-after">Epoxy</span></div>
+    </div>
+    <div class="project-caption"><div><h3>Epoxyvloeren — Coating & Afwerking</h3><p>Epoxy · Vloercoating · Diverse locaties</p></div><div class="project-num">05</div></div>
+  </div>
+
+  <!-- KELDER AFDICHTING -->
+  <div class="section-block" data-cat="kelder" style="margin-top:56px;">
+    <p class="section-title">Kelder Afdichting — Stap voor Stap</p>
+    <div class="photo-grid">
+      <div class="photo-grid-item" onclick="lbDirect('fotos/kelder-01.jpg','Stap 1 — Beginsituatie')"><img src="fotos/kelder-01.jpg" alt="Kelder"/><span class="step-label" style="background:rgba(0,0,0,0.65);color:#ccc;">Stap 1 — Begin</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/kelder-02.jpg','Stap 2 — Inspectie')"><img src="fotos/kelder-02.jpg" alt="Kelder"/><span class="step-label" style="background:rgba(0,0,0,0.65);color:#ccc;">Stap 2 — Inspectie</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/kelder-03.jpg','Stap 3 — Primer trap')"><img src="fotos/kelder-03.jpg" alt="Kelder"/><span class="step-label" style="background:rgba(50,50,50,0.8);color:#ddd;">Stap 3 — Primer</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/kelder-04.jpg','Stap 4 — Coating wanden')"><img src="fotos/kelder-04.jpg" alt="Kelder"/><span class="step-label" style="background:rgba(50,50,50,0.8);color:#ddd;">Stap 4 — Coating</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/kelder-05.jpg','Stap 5 — Afdichtingslaag')"><img src="fotos/kelder-05.jpg" alt="Kelder"/><span class="step-label" style="background:rgba(50,50,50,0.8);color:#ddd;">Stap 5 — Afdichting</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/kelder-06.jpg','Stap 6 — Vloer in uitvoering')"><img src="fotos/kelder-06.jpg" alt="Kelder"/><span class="step-label" style="background:rgba(50,50,50,0.8);color:#ddd;">Stap 6 — Vloer</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/kelder-07.jpg','Stap 7 — Vloer waterdicht')"><img src="fotos/kelder-07.jpg" alt="Kelder"/><span class="step-label" style="background:rgba(50,50,50,0.8);color:#ddd;">Stap 7 — Waterdicht</span></div>
+      <div class="photo-grid-item" onclick="lbDirect('fotos/kelder-08.jpg','Stap 8 — Eindresultaat')"><img src="fotos/kelder-08.jpg" alt="Kelder"/><span class="step-label label-after">Stap 8 — Klaar</span></div>
+    </div>
+    <div class="project-caption"><div><h3>Kelder Afdichting — Volledig Proces</h3><p>Waterdichting · Kelder · 8 stappen</p></div><div class="project-num">06</div></div>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="lbClose()">
+  <span class="lb-close" onclick="lbClose()">×</span>
+  <span class="lb-nav lb-prev" onclick="event.stopPropagation();lbNav(-1)">&#8592;</span>
+  <img id="lb-img" src="" alt=""/>
+  <span class="lb-nav lb-next" onclick="event.stopPropagation();lbNav(1)">&#8594;</span>
+  <p class="lb-caption" id="lb-cap"></p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Boris Multiservice — Betonherstel</p>
+  <a href="https://borismultiservice.nl" target="_blank" rel="noopener">borismultiservice.nl</a>
+</footer>
+
+<script>
+  // FILTER
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.getAttribute('data-filter');
+      document.querySelectorAll('.section-block').forEach(block => {
+        if (f === 'all' || block.getAttribute('data-cat') === f) {
+          block.style.display = '';
+        } else {
+          block.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // LIGHTBOX
+  const betonImages = [
+    { src: 'fotos/beton-01-voor.jpg', cap: 'Voor — Balkondekschade' },
+    { src: 'fotos/beton-01-na.jpg',   cap: 'Na — Balkondekschade hersteld' },
+    { src: 'fotos/beton-02-voor.jpg', cap: 'Voor — Onderdoorgang' },
+    { src: 'fotos/beton-02-na.jpg',   cap: 'Na — Onderdoorgang hersteld' },
+    { src: 'fotos/beton-03-voor.jpg', cap: 'Voor — Gevelschade' },
+    { src: 'fotos/beton-03-na.jpg',   cap: 'Na — Gevel hersteld' },
+    { src: 'fotos/beton-04-voor.jpg', cap: 'Voor — Dakrand schade' },
+    { src: 'fotos/beton-04-na.jpg',   cap: 'Na — Dakrand hersteld' },
+  ];
+  let cur = 0;
+  let lbMode = 'list';
+  let lbSrc = '';
+  let lbCapStr = '';
+
+  function lb(idx) {
+    lbMode = 'list'; cur = idx;
+    document.getElementById('lb-img').src = betonImages[cur].src;
+    document.getElementById('lb-cap').textContent = betonImages[cur].cap;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function lbDirect(src, cap) {
+    lbMode = 'single'; lbSrc = src; lbCapStr = cap;
+    document.getElementById('lb-img').src = src;
+    document.getElementById('lb-cap').textContent = cap;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function lbClose() { document.getElementById('lightbox').classList.remove('open'); }
+  function lbNav(dir) {
+    if (lbMode !== 'list') return;
+    cur = (cur + dir + betonImages.length) % betonImages.length;
+    document.getElementById('lb-img').src = betonImages[cur].src;
+    document.getElementById('lb-cap').textContent = betonImages[cur].cap;
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') lbClose();
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'ArrowLeft') lbNav(-1);
+  });
+</script>
+</body>
+</html>
