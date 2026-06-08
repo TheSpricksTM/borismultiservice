@@ -418,7 +418,7 @@ footer { background:var(--dark); border-top:1px solid rgba(255,255,255,.05); pad
         <div><span class="stat-num" data-target="98">0</span><span class="stat-lbl">% Tevreden</span></div>
         <div><span class="stat-num" data-target="4">0</span><span class="stat-lbl">Specialisaties</span></div>
       </div>
-      <div class="hero-badge"><span style="font-size:18px">🏆</span><div class="badge-txt"><strong>Gecertificeerd Vakman</strong>Betonherstel &amp; vloerspecialist</div></div>
+      <div class="hero-badge"><span style="font-size:18px">🛡️</span><div class="badge-txt"><strong>Volledig Verzekerd</strong>Veilig &amp; betrouwbaar vakmanschap</div></div>
     </div>
   </div>
   <div class="scroll-hint"><div class="scroll-line"></div>Scroll verder</div>
@@ -626,22 +626,19 @@ footer { background:var(--dark); border-top:1px solid rgba(255,255,255,.05); pad
     </div>
   </div>
   <div class="reveal">
-    <div class="sec-label" style="margin-bottom:24px;">Stuur een bericht</div>
-    <div id="formSuccess" style="display:none; padding:20px; background:rgba(76,175,80,0.1); border:1px solid rgba(76,175,80,0.3); border-left:3px solid #4caf50; margin-bottom:20px;">
-      <p style="color:#4caf50; font-size:14px;">✓ &nbsp;Uw bericht is verstuurd! Wij nemen zo snel mogelijk contact met u op.</p>
-    </div>
-    <div id="formError" style="display:none; padding:20px; background:rgba(196,98,45,0.1); border:1px solid rgba(196,98,45,0.3); border-left:3px solid #c4622d; margin-bottom:20px;">
-      <p style="color:#c4622d; font-size:14px;">✗ &nbsp;Er is iets misgegaan. Probeer het opnieuw of mail direct naar info@borismultiservice.nl</p>
-    </div>
-    <div class="form-row">
-      <div class="ff"><label>Voornaam</label><input type="text" id="f_voornaam" name="voornaam" placeholder="Jan" required></div>
-      <div class="ff"><label>Achternaam</label><input type="text" id="f_achternaam" name="achternaam" placeholder="de Vries" required></div>
-    </div>
-    <div class="ff"><label>E-mailadres</label><input type="email" id="f_email" name="email" placeholder="jan@voorbeeld.nl" required></div>
-    <div class="ff"><label>Telefoonnummer</label><input type="tel" id="f_telefoon" name="telefoon" placeholder="+31 6 12345678"></div>
-    <div class="ff"><label>Dienst</label><select id="f_dienst" name="dienst"><option value="">Selecteer een dienst...</option><option>Beton Herstel</option><option>Epoxy Vloeren</option><option>Kelderafdichting &amp; Kitwerk</option><option>Anders</option></select></div>
-    <div class="ff"><label>Bericht</label><textarea id="f_bericht" name="bericht" placeholder="Beschrijf kort uw project of vraag..." required></textarea></div>
-    <button class="form-btn" id="formSubmit"><span>Verstuur Bericht</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    <div class="sec-label" style="margin-bottom:24px;">Direct contact</div>
+    <p style="font-size:14px;color:var(--dust);line-height:1.8;margin-bottom:36px;font-weight:300;">Heeft u een project of vraag? Stuur ons een e-mail en wij reageren zo snel mogelijk — meestal binnen één werkdag.</p>
+
+    <a href="mailto:info@borismultiservice.nl?subject=Aanvraag%20Boris%20MultiService&body=Beste%20Boris%2C%0A%0AIk%20heb%20een%20vraag%20over%3A%0A%0ANaam%3A%0ATelefoon%3A%0ABericht%3A"
+      class="btn-gold"
+      style="font-size:13px;padding:18px 36px;display:inline-flex;">
+      <span>Contact opnemen</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </a>
+
+    <p style="margin-top:20px;font-size:11px;color:var(--dust);letter-spacing:1px;">
+      Of mail direct naar <a href="mailto:info@borismultiservice.nl" style="color:var(--gold);text-decoration:none;">info@borismultiservice.nl</a>
+    </p>
   </div>
 </section>
 
@@ -688,55 +685,6 @@ const N=window.matchMedia('(pointer:coarse)').matches?35:70;
 class P { constructor(){ this.reset(true); } reset(r){ this.x=Math.random()*W; this.y=r?Math.random()*H:H+4; this.vx=(Math.random()-.5)*.3; this.vy=-(Math.random()*.5+.1); this.r=Math.random()*1.3+.2; this.a=Math.random()*.3+.04; this.l=0; this.m=Math.random()*340+160; } tick(){ this.x+=this.vx; this.y+=this.vy; this.l++; if(this.l>this.m||this.y<-4)this.reset(false); } draw(){ const f=this.l<36?this.l/36:this.l>this.m-36?(this.m-this.l)/36:1; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=`rgba(232,184,75,${f*this.a})`; ctx.fill(); } }
 for(let i=0;i<N;i++){ const p=new P(); p.l=Math.random()*p.m; pts.push(p); }
 (function loop(){ ctx.clearRect(0,0,W,H); pts.forEach(p=>{p.tick();p.draw();}); requestAnimationFrame(loop); })();
-document.getElementById('formSubmit').addEventListener('click', async function(e) {
-  e.preventDefault();
-  const voornaam = document.getElementById('f_voornaam').value.trim();
-  const achternaam = document.getElementById('f_achternaam').value.trim();
-  const email = document.getElementById('f_email').value.trim();
-  const bericht = document.getElementById('f_bericht').value.trim();
-  const successEl = document.getElementById('formSuccess');
-  const errorEl = document.getElementById('formError');
-  successEl.style.display = 'none';
-  errorEl.style.display = 'none';
-  if (!voornaam || !email || !bericht) {
-    errorEl.querySelector('p').textContent = '✗  Vul alle verplichte velden in (naam, e-mail en bericht).';
-    errorEl.style.display = 'block';
-    return;
-  }
-  const btn = this;
-  btn.innerHTML = '<span>Versturen...</span>';
-  btn.disabled = true;
-  btn.style.opacity = '0.7';
-  const data = new FormData();
-  data.append('voornaam', voornaam);
-  data.append('achternaam', document.getElementById('f_achternaam').value.trim());
-  data.append('email', email);
-  data.append('telefoon', document.getElementById('f_telefoon').value.trim());
-  data.append('dienst', document.getElementById('f_dienst').value);
-  data.append('bericht', bericht);
-  try {
-    const res = await fetch('mail.php', { method: 'POST', body: data });
-    const json = await res.json();
-    if (json.success) {
-      successEl.style.display = 'block';
-      ['f_voornaam','f_achternaam','f_email','f_telefoon','f_bericht'].forEach(id => document.getElementById(id).value = '');
-      document.getElementById('f_dienst').selectedIndex = 0;
-      btn.innerHTML = '<span>Verstuurd ✓</span>';
-      btn.style.background = '#4caf50';
-      btn.style.color = '#fff';
-      setTimeout(() => {
-        btn.innerHTML = '<span>Verstuur Bericht</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-        btn.style.background = ''; btn.style.color = ''; btn.style.opacity = ''; btn.disabled = false;
-      }, 4000);
-    } else {
-      throw new Error(json.error || 'Onbekende fout');
-    }
-  } catch(err) {
-    errorEl.style.display = 'block';
-    btn.innerHTML = '<span>Verstuur Bericht</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-    btn.style.opacity = ''; btn.disabled = false;
-  }
-});
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{ const t=document.querySelector(a.getAttribute('href')); if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});} }));
 </script>
 <!-- ===== COOKIE POPUP ===== -->
